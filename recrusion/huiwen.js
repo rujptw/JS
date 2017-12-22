@@ -1,8 +1,4 @@
-//普通
-// function cal(str){
-// 	var nstr= str.split("").reverse().join("");
-// 	return nstr === str? true:false;
-// }
+
 //递归
 function cal(str){
 	if(str.length==0 || str.length==1){
