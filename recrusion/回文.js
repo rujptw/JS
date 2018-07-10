@@ -8,3 +8,4 @@ function cal(str){
 	}
 }
 console.log(cal("acbca"))
+
