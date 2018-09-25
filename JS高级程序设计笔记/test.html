@@ -8,18 +8,13 @@
 </head>
 <body>
     <script>
-        function hasPlugin(name){
-            let pluginName = name.toLowerCase()
-            let arr = navigator.plugins;
-            let len = navigator.plugins.length;
-            for (let i = 0; i < len; i++) {
-                if(arr[i].name.toLowerCase().indexOf(pluginName)>-1){
-                    return true;
-                }
-            }
-            return false;
+        function hostMethods(object,property){
+            let aim = typeof object[property];
+            console.log(aim==="function" || !!(aim==="object"&& object[property]) || aim==="unknown")
+            return aim==="function" || !!(aim==="object"&& object[property]) || aim==="unknow"
         }
-        hasPlugin("Chrome PDF Plugin")
+        let xhr = new ActiveXObject("Microsoft.XMLHttp")
+        hostMethods(xhr,"open")
     </script>
 </body>
 </html>
