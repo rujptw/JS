@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发布订阅模式</title>
+</head>
+<body>
+    <script>
+
+        // let shoeObj = {};
+        // shoeObj.list = [];
+        // shoeObj.listen = function(key,fn){
+        //     //没有侦听该事件，就把他加入数组,以该事件为下标的数组，数组的下标可以可以自由设定
+        //     if(!this.list[key]){
+        //         this.list[key] = []
+        //     }
+        //     shoeObj.list[key].push(fn)
+        //     console.log("shoeObj.list",shoeObj.list)
+        // }
+        // shoeObj.trigger = function(){
+        //     let key = Array.prototype.shift.call(arguments);
+        //     console.warn("arguments",arguments)
+        //     let fns = this.list[key]
+        //     console.log("fns",fns)
+        //     if(!fns || fns.length === 0){
+        //         return;
+        //     }
+        //     for(let i=0,fn; fn = fns[i++];){
+        //         console.log("fns",fns)
+        //         console.log("arguments",arguments)
+        //         fn.apply(this,arguments)
+        //     }
+        // }
+        // shoeObj.listen("kk",function(size){
+        //     console.log("size",size)
+        // })
+        // shoeObj.trigger("kk",32)
+        // shoeObj.trigger("kk",37)
+        
+        //通用发布订阅
+        let sendsubscribe = {
+            list:[],
+            listen:function(key,fn){
+                if(!this.list[key]){
+                    this.list[key] = [];
+                }
+                this.list[key].push(fn)
+            },
+            trigger:function(){
+                let key = Array.prototype.shift.call(arguments);//获取真正想要的下标
+                let fns = this.list[key];
+                if(!fns || fns.length === 0){
+                    return;
+                }else{
+                    for(let i = 0,fn; fn=fns[i++];){
+                        fn.apply(this,arguments)
+                    }
+                }
+            },
+            remove:function(key,fn){
+                let fns = this.list[key];
+                if(!fns){
+                    return false; 
+                }
+                if(!fn){
+                    fn&& (fns.length = 0)
+                }else{
+                    for(let i = fns.length - 1;i>=0;i--){
+                        let _fn = fns[i];
+                        if(_fn===fn){
+                            fns.splice(i,1)
+                        }
+                    }
+                }
+            }
+        }
+        //定义函数，让每一个对象都具有发布订阅的能力
+        let initEvent = function(obj){
+            for(let i in sendsubscribe){
+                obj[i] = sendsubscribe[i]
+            }
+        }
+        let house = {};
+        initEvent(house)
+        house.listen("high-level",fn1 = function(size,position){
+            console.log("面积",`${size},位置 ${position}`);
+        })
+        house.listen("price",fn2 = function(origin,discount){
+            console.log("价格",`${origin},折扣,${discount}`);
+        })
+        house.remove("price",fn2)
+        house.trigger("price","132万","80%")
+        house.trigger("high-level","132平","顶层")
+    </script>
+</body>
+</html>
