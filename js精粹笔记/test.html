@@ -9,7 +9,82 @@
 </head>
 
 <body>
-  <script src="./program.js"></script>
+  <p name="sad">我是p标签<strong>我是strong标签</strong></p>
+  <script>
+    // 汉诺塔程序:使用了递归
+    // let hanoi = function (disc, src, aux, dst) {
+    //     if (disc > 0) {
+    //       hanoi(disc - 1, src, dst, aux);
+    //       console.log('move disc ' + disc + 'from ' + src + ' to ' + dst);
+    //       hanoi(disc - 1, src, dst, aux);
+    //     }
+    //   }
+    //   hanoi(10, 'src', 'aux', 'dst')
+    // 利用递归遍历dom树
+    let walk_the_dom = function walk(node, func) {
+      func(node);
+      node = node.firstChild;
+      while (node) {
+        walk(node, func);
+        node = node.nextSibling;
+      }
+    }
+    let getElementByAttribute = function (att, value) {
+      let results = [];
+      walk_the_dom(document.body, function (node) {
+        let actual = node.nodeType === 1 && node.getAttribute(att);
+        if (typeof actual === "string" &&
+          (actual === value || typeof value !== 'string')) {
+          results.push(node);
+        }
+      })
+      console.log("results", results)
+      return results;
+    }
+    // 获取name为sad的p标签的dom;
+    getElementByAttribute("name", "sad")
+
+    // 尾递归：js不支持
+    let endFactorial = function endFactorial(i, a) {
+      a = a || 1;
+      if (i < 2) {
+        return a;
+      }
+      return endFactorial(i - 1, a * i)
+    }
+    // 普通递归
+    let factorial = function factorial(k) {
+      if (k <= 1) {
+        return 1;
+      } else {
+        return k * factorial(k - 1)
+      }
+    }
+    document.writeln(factorial(5))
+    document.writeln(endFactorial(4))
+
+    var foo = function () {
+      var a = 3, b = 5;
+      var bar = function () {
+        var b = 7, c = 11
+        console.log("a", a)
+        console.log("b", b)
+        console.log("c", c)
+        a += b + c;
+        console.log("a", a)
+        console.log("b", b)
+        console.log("c", c)
+      }
+      console.log("a", a)
+      console.log("b", b)
+      // console.log("c", c)
+      bar()
+      console.log("a", a)
+      console.log("b", b)
+      console.log("c", c)
+    }
+    foo()
+  </script>
 </body>
 
 </html>
