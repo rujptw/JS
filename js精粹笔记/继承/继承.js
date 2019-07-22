@@ -1,3 +1,64 @@
+// 记忆功能
+// let k=0;
+// let fibonacci = n => {
+// 	console.log(++k);
+// 	return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+// };
+let fibonacci2 = () => {
+	let memo = [0, 1];
+	let fib = n => {
+		let result = memo[n];
+		if (typeof result !== "number") {
+			result = fib(n - 1) + fib(n - 2);
+			memo[n] = result;
+		}
+		return result;
+	};
+	return fib;
+};
+for (let i = 0; i <= 10; i++) {
+	console.log(i, fibonacci2(i)(i));
+}
+
+let fibonacci = n => {
+	return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+};
+
+for (let i = 0; i <= 10; i++) {
+	console.log(i, fibonacci(i));
+}
+
+// 进一步地封装
+let memoizer = function(memo, formula) {
+	let recur = n => {
+		let result = memo[n];
+		if (typeof result !== "number") {
+			result = formula(recur, n);
+			memo[n] = result;
+		}
+		return result;
+	};
+	return recur;
+};
+
+// 计算总和
+let fibonacci3 = memoizer([0, 1], function(recur, n) {
+	return recur(n - 1) + recur(n - 2);
+});
+
+for (let i = 0; i <= 10; i++) {
+	console.log(i, fibonacci3(i));
+}
+
+// 计算阶乘
+
+let fibonacci4 = memoizer([1, 1], function(recur, n) {
+	return n * recur(n - 1);
+});
+for (let i = 0; i <= 10; i++) {
+	console.log(i, fibonacci4(i));
+}
+
 // 扩充构造函数原型
 var Mammal = function(name) {
 	this.name = name;
