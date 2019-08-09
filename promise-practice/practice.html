@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  let resultA, resultB, resultC;
+
+  async function addAsync(num1, num2) {
+    return Promise.resolve(num1 + num2);
+  }
+  async function PLUS(){
+    let resultA = await addAsync(1,2);
+    let resultB = await addAsync(resultA,2);
+    let resultC = await addAsync(resultB,2);
+    console.log("result", resultA, resultB, resultC)
+  }
+  (async () => {
+      await PLUS()
+    })()
+  </script>
+</body>
+</html>

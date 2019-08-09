@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>promise</title>
+</head>
+<body>
+  <script>
+    let isMomHappy = false;
+    let willGetNewPhone = new Promise(
+      function (resolve,reject){
+        if(isMomHappy){
+          let phone = {
+            brand:'Samsung',
+            color:'black'
+          }
+          resolve(phone);
+        }
+        else {
+          let reason = new Error('mom is not happy');
+          reject(reason);
+      }
+      }
+    );
+    // let askMom = function(){
+    //   willGetNewPhone.then(function(fullfilled){
+    //     console.log(fullfilled);
+    //   }).catch(function(error){
+    //     console.log(error.message);
+    //   })
+    // }
+    let showOff = function(phone){
+      // return new Promise(
+      //   function(resolve,reject){
+      //     let message = 'Hey friend, I have a new '+ phone.color+ ' '+ phone.brand + ' phone';
+      //     resolve(message);
+      //   }
+      // )
+      let message = 'Hey friend, I have a new ' + phone.color + ' ' + phone.brand + ' phone';
+      return Promise.resolve(message);
+    }
+     let askMom = function(){
+      console.log("before ask Mom");
+      willGetNewPhone
+      .then(showOff).then(function(fullfilled){
+        console.log(fullfilled);
+      }).catch(function(error){
+        console.log(error.message);
+      })
+      console.log("after ask Mom");
+    }
+    askMom();
+  </script>
+</body>
+</html>
