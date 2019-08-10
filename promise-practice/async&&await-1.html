@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>async&&await</title>
+</head>
+
+<body>
+  <script>
+    let isMomHappy = false;
+    let willGetNewPhone = new Promise(
+      (resolve, reject) => {
+        if (isMomHappy) {
+          let phone = {
+            brand: 'Samsung',
+            color: 'black'
+          }
+          resolve(phone);
+        }
+        else {
+          let reason = new Error('mom is not happy');
+          reject(reason);
+        }
+      }
+    );
+    async function showOff(phone) {
+      let message = 'Hey friend, I have a new ' + phone.color + ' ' + phone.brand + ' phone';
+      return Promise.resolve(message);
+    }
+    async function askMom() {
+      try {
+        console.log("before ask Mom");
+        let phone = await willGetNewPhone;
+        let message = await showOff(phone);
+        console.log(message);
+        console.log('after asking mom');
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    (async () => {
+      await askMom()
+    })()
+  </script>
+</body>
+
+</html>

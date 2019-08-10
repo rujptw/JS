@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>async&&await</title>
+</head>
+
+<body>
+  <script>
+    async function timeout(flag) {
+      if (flag) {
+        return 'hello world';
+      } else {
+        throw 'my god,failure';
+      }
+    }
+    timeout(false).then(result => {
+      console.log(result)
+    }).catch(err => {
+      console.log('err', err)
+    })
+    // //  有async前缀的函数是一个异步函数,返回的是一个promise,可以使用then和catch分别处理输出结果和错误
+    // await:等待,通常后面接一个返回promise对象的表达式，只能放在有async前缀的函数里
+    //  console.log(timeout())
+    //  console.log("我先执行")
+    function doubleAfter2Seconds(num) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(2 * num);
+        }, 2000);
+      })
+    }
+    async function testResult() {
+      // 有await 前缀的函数后面的代码等到该函数执行完毕之后，才能继续执行,写异步代码就像写同步代码一样了
+      // async 函数采用try...catch捕获异常，await放到try中处理,异常则在cath中处理
+      console.log("test")
+      let first = await doubleAfter2Seconds(30);
+      let second = await doubleAfter2Seconds(50);
+      let third = await doubleAfter2Seconds(30);
+
+      console.log("result", first + second + third)
+    }
+    testResult()
+  </script>
+</body>
+
+</html>
