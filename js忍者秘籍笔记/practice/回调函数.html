@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>回调函数</title>
+</head>
+
+<body>
+  <strong>
+    一个函数如果不是立即执行，而是稍后执行的话,那这个函数就是回调函数
+  </strong>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+  <ul id="results"></ul>
+  <script>
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+
+    function useless(cb) {
+      return cb();
+    }
+    let text = 'Demo Arigato';
+    // useless 函数作为参数传入asserts,返回一个回调，并且在稍后调用
+    assert(useless(
+      function () {
+        return text;
+      }) === text,
+      'The useless function works' + text
+    )
+  </script>
+</body>
+
+</html>

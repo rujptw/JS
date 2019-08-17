@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>简单测试组的实现</title>
+  <script>
+    (function () {
+      var results;
+      this.assert = function assert(value, desc) {
+        var li = document.createElement('li');
+        li.className = value ? 'pass' : 'fail';
+        li.appendChild(document.createTextNode(desc));
+        results.appendChild(li);
+        if (!value) {
+          li.parentNode.parentNode.className = 'fail';
+        }
+        return li;
+      };
+      this.test = function test(name, fn) {
+        // 创建一个name li插入到#results里，随后调用assert函数，将结果插入到name li里
+        results = document.getElementById('results');
+        results = assert(true, name).appendChild(
+          document.createElement('ul')
+        )
+        fn()
+      }
+      console.log("我是自执行函数")
+    })();
+
+    window.onload = function () {
+      console.log("onload")
+      test('A test', function () {
+        assert(true, 'First assetion completed');
+        assert(true, 'Second assetion completed');
+        assert(true, 'Third assetion completed');
+      })
+      test('Another test', function () {
+        assert(true, 'First assetion completed');
+        assert(false, 'Second assetion failed');
+        assert(true, 'Third assetion completed');
+      })
+      test('A third test', function () {
+        assert(null, 'fail');
+        assert(5, 'pass');
+      })
+    }
+  </script>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="results"></ul>
+
+</body>
+
+</html>
