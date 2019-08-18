@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+  <ul id="results"></ul>
+  <script>
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+    // < !--构建一个自己的forEach函数 -->
+    function forEach(list, cb) {
+      let isArr = Array.isArray(list);
+      let isFunc = typeof cb;
+      // 错误处理
+      if (!isArr) {
+        throw ('第一个参数不是数组')
+      }
+      if (!isFunc) {
+        throw ('第二个参数不是函数')
+      }
+      for (let index = 0; index < list.length; index++) {
+        // LEARN:传入不同的参数
+        cb.call(list[index], index, list[index], arguments)
+      }
+    }
+    var weapons = ['shuriken', 'katana', 'nunchucks'];
+    forEach(weapons, function (index, item, arguments) {
+      //LEARN:将每一个元素做为上下文传入回调函数,返回的是String {"nunchucks"},类型是object,它有toString方法，将其转化为字符串,再与weapons[index]比较,weapons[index]返回的是字符串
+      console.log(this)
+      console.log(arguments)
+      console.log(item)
+      assert(this == item, 'Got the expected value of ' + weapons[index])
+    })
+  </script>
+</body>
+
+</html>

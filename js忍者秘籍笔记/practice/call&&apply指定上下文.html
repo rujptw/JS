@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <ul id="results"></ul>
+  <script>
+    // call和apply可以强制指定上下文,对回调函数特别有用
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+    function juggle() {
+      var result = 0;
+      for (var index = 0; index < arguments.length; index++) {
+        result += arguments[index];
+      }
+
+      console.log(this, result)
+      // this.result 是上下文的result
+      this.result = result;
+    }
+    var ninja1 = {};
+    var ninja2 = {};
+    juggle.apply(ninja1, [1, 2, 3, 4])
+    juggle.call(ninja2, 5, 6, 7, 8)
+
+
+    console.log(ninja1)
+    console.log(ninja2)
+    assert(ninja1.result === 10, 'juggled via apply')
+    assert(ninja2.result === 26, 'juggled via call')
+  </script>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+
+</body>
+
+</html>

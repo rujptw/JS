@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 函数调用this是window,方法调用this是方法调用的环境 -->
+  <ul id="results"></ul>
+  <script>
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+    function creep() {
+      return this;
+    }
+    assert(creep() === window, 'creeping in the window');
+    var sneak = creep;
+    assert(sneak() === window, 'sneaking in the window');
+    var ninja1 = {
+      skulk: creep
+    }
+    var ninja2 = {
+      skulk: creep
+    }
+    assert(ninja1.skulk() === ninja1, 'the first ninja1 is skulk');
+    assert(ninja2.skulk() === ninja2, 'the second ninja2 is skulk');
+    // 作为构造器调用
+    function Ninja() {
+      this.skulk = function () {
+        return this;
+      }
+    }
+    var ninja1 = new Ninja();
+    var ninja2 = new Ninja();
+    assert(ninja1.skulk() === ninja1, 'the 1st ninja is skulking')
+    assert(ninja2.skulk() === ninja2, 'the 2st ninja is skulking')
+  </script>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+</body>
+
+</html>
