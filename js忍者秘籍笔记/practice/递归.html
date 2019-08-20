@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="results"></ul>
+
+  <script>
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+    // 具名函数递归处理回文
+    function isPailindrome(text) {
+      if (text.length <= 1) {
+        return true;
+      }
+      if (text.charAt(0) !== text.charAt(text.length - 1)) {
+        return false;
+      }
+      return isPailindrome(text.substr(1, text.length - 2))
+    }
+    console.log(isPailindrome('abba'))
+
+    //  忍者沟通递归,z作为函数进行递归
+    function chirp(n) {
+      return n > 1 ? chirp(n - 1) + '-chirp' : 'chirp'
+    }
+    assert(chirp(3) === 'chirp-chirp-chirp', 'Calling the named function comes naturally.')
+    //  作为方法进行递归
+    // var ninja = {
+    //   chirp:function(n){
+    //     // LEARN:ninja.chirp改为chirp,try...catch...就不会报错??
+    //      return n > 1 ? ninja.chirp(n - 1) + '-chirp' : 'chirp'
+    //   }
+    // }
+    var ninja = {
+      chirp: function (n) {
+        // 将ninja.chirp改为this.chirp,chirp芳芳调用时引用的就是所处环境的上下文，比如说ninja/samurai
+        return n > 1 ? this.chirp(n - 1) + '-chirp' : 'chirp'
+      }
+    }
+    assert(ninja.chirp(3) === 'chirp-chirp-chirp', 'An object property isnt too confusing,either.')
+    // samurai 的chirp属性引用了ninja.chirp
+    var samurai = { chirp: ninja.chirp }
+    // 由于对象属于引用类型,属性值代表的函数会随着对象的清空，随后调用就会报错
+    ninja = {};
+    try {
+      assert(samurai.chirp(3) === 'chirp-chirp-chirp', 'is this going to work?.')
+    } catch (e) {
+      assert(false, 'Oh,this isnt good!,where would ninja.chirp go?')
+    }
+  </script>
+</body>
+
+</html>
