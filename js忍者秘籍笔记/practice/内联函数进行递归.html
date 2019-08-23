@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+  <ul id="results"></ul>
+  <script>
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+    var ninja = {
+      chirp: function signal(n) {
+        return n > 1 ? signal(n - 1) + '-chirp' : 'chirp';
+      }
+    }
+    assert(ninja.chirp(3) == "chirp-chirp-chirp", 'The method correctly calls itself')
+    var samurai = { chirp: ninja.chirp }
+    // ninja为空对象，影响不到内联函数
+    ninja = {};
+    assert(samurai.chirp(3) == "chirp-chirp-chirp", 'The method correctly calls itself')
+
+    // 内联函数赋值给变量
+    var otherNinja = function myNinja() {
+      assert(otherNinja == myNinja, 'this function is named two things at once!')
+    }
+    otherNinja();
+    // 内联函数的名称只在函数内部可见
+    assert(typeof myNinja == "undefined", 'myNinja is not defined outside of the function')
+
+  </script>
+</body>
+
+</html>
