@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <ul id="results"></ul>
+  <style>
+    #results li.pass {
+      color: green;
+    }
+
+    #results li.fail {
+      color: red;
+    }
+  </style>
+  <script>
+    function assert(value, desc) {
+      console.log(value, desc);
+      var li = document.createElement("li");
+      li.className = value ? 'pass' : 'fail';
+      li.appendChild(document.createTextNode(desc));
+      document.getElementById('results').appendChild(li);
+    }
+    var store = {
+      nextId: 1,
+      cache: {},
+      add: function (fn) {
+        if (!fn.id) {
+          fn.id = store.nextId++;
+          return !!(store.cache[fn.id] = fn);
+        }
+      }
+    }
+    //LEARN:函数可以添加属性
+    function ninja() { };
+    assert(store.add(ninja), 'Function was safely added')
+    assert(store.add(ninja), 'But it was only added once.');
+    console.log(store);
+  </script>
+</body>
+
+</html>
